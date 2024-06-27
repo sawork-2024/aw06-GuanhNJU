@@ -1,0 +1,37 @@
+server:
+  port: 18080
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      mvc:
+        routes:
+          - id: product1
+            uri: lb://product1
+            predicates:
+              - Path=/product1/**
+            filters:
+              - StripPrefix=1
+          - id: product2
+            uri: lb://product2
+            predicates:
+              - Path=/product2/**
+            filters:
+              - StripPrefix=1
+          - id: cart
+            uri: lb://cart
+            predicates:
+              - Path=/cart/**
+            filters:
+              - StripPrefix=1
+  application:
+    name: gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka/
+
+
